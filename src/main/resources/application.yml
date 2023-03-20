@@ -1,0 +1,32 @@
+spring:
+  web:
+    resources:
+      static-locations[0]: "file:src/main/resources/static/"
+      static-locations[1]: "classpath:/static/"
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/security
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+    hibernate:
+      ddl-auto: update
+
+file:
+  dir: "/src/main/resources/static/files/"
+  banner: "/src/main/resources/static/banner/"
+
+
+
+

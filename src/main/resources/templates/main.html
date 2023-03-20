@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+    .layout {
+        width: 1400px;
+        margin: auto;
+        margin-top: 40px;
+    }
+
+    .id {
+        width: 200px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .count {
+        width: 100px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .title {
+        width: 1000px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .title a {
+        text-decoration: none;
+    }
+
+    .name {
+        width: 200px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .board-bar {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .board-bar a {
+        text-decoration: none;
+        color: white;
+        background-color: #00B140;
+        padding: 10px 20px;
+    }
+
+    .keyword {
+        width: 200px;
+        height: 30px;
+    }
+
+    .keyword-btn {
+        color: white;
+        background-color: #00B140;
+        padding: 10px 20px;
+        border: none;
+    }
+
+    .list-controller {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .board-banner {
+        width: 1400px;
+        height: 300px;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .board-banner img {
+        width: 1400px;
+        height: 300px;
+    }
+
+    .connect-side {
+        width: 1400px;
+        display: flex;
+        justify-content: space-between;
+        margin: auto;
+        margin-bottom: 10px;
+        color: #00B140;
+        padding: 0;
+        border-bottom: 2px solid #00B140;
+    }
+
+</style>
+<body>
+    <div class="layout">
+        <div class="connect-side">
+            <h2>Green Connect</h2>
+            <p></p>
+        </div>
+        <div class="board-banner">
+            <img th:src="@{'/banner/' + ${banner.savedNm}}" alt="첨부 이미지">
+        </div>
+        <div class="board-bar">
+            <div>
+                <form th:action="@{/}" method="get">
+                    <a href="/dashBoard">나의 정보</a>
+                    <input type="text" name="keyword" class="keyword">
+                    <button type="submit" class="keyword-btn">검색</button>
+                </form>
+            </div>
+            <a href="/input">글쓰기</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th class="id">글번호</th>
+                <th class="title">제목</th>
+                <th class="name">글쓴이</th>
+                <th class="count">조회</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board: ${list}">
+                <td th:text="${board.id}" class="id"></td>
+                <td class="title"><a th:text="${board.title}" th:href="@{/view(id=${board.id})}"></a></td>
+                <td th:text="${board.nickname}" class="name"></td>
+                <td th:text="${board.count}" class="count"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="list-controller">
+            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <a th:if="${page != nowPage}" th:href="@{/(page = ${page - 1}, keyword = ${param.keyword})}" th:text="${page}"></a>
+                <strong th:if="${page == nowPage}" th:text="${page}" style="color: blue"></strong>
+            </th:block>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .board-box {
+        width: 1100px;
+        min-height: 800px;
+        height: auto;
+        margin: auto;
+    }
+
+    .board-comment {
+        width: 1100px;
+        margin: auto;
+        padding-top: 10px;
+    }
+
+    .board-box-top {
+        border-top: 2px solid #00B140;
+        padding: 20px 10px;
+        border-bottom: 1px solid gray;
+    }
+
+    .board-box-main {
+        padding: 0px 10px;
+    }
+
+    .board-box-top p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .title {
+        margin-bottom: 20px;
+    }
+
+    .back {
+        width: 1100px;
+        margin: auto;
+        margin-top: 20px;
+        display: flex;
+    }
+
+    .back a {
+        text-decoration: none;
+        color: white;
+        background-color: #00B140;
+        padding: 10px 20px;
+    }
+
+    .submit {
+        margin-left: 10px;
+        color: white;
+        background-color: #00B140;
+        padding: 12px 22px;
+        border: none;
+    }
+
+    .board-comment-form {
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-around;
+        border-top: 2px solid #00B140;
+    }
+
+    .board-comment-form textarea {
+        width: 960px;
+        height: 70px;
+        padding: 10px;
+        resize: none;
+    }
+
+    .board-comment-form button {
+        color: white;
+        background-color: #00B140;
+        padding: 10px 20px;
+        border: none;
+    }
+
+    .board-comments {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 10px;
+        background-color: #fafafa;
+        border: 1px solid #ebebeb;
+        margin-bottom: 10px;
+    }
+
+    .like-box {
+        width: 1100px;
+        margin: auto;
+        padding: 20px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid #00B140;
+    }
+
+    .like-box-tool button {
+        padding: 20px;
+        border: none;
+        border-radius: 100%;
+        color: #fff;
+        background-color: #00B140;
+        font-size: 15px;
+    }
+
+    .like-box-tool {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 250px;
+        height: 70px;
+        border: 1px solid gray;
+        padding: 30px 20px;
+    }
+
+    .like-box-tool p {
+        color: red;
+        font-size: 20px;
+        margin-right: 25px;
+    }
+
+    .connect-side {
+        width: 1100px;
+        display: flex;
+        justify-content: space-between;
+        margin: auto;
+        color: #00B140;
+        padding: 0;
+    }
+
+</style>
+<body>
+<div class="connect-side">
+    <h2>Green Connect</h2>
+    <p></p>
+</div>
+<div class="board-box">
+    <div class="board-box-top">
+        <b><p th:text="${board.title}" class="title"></p></b>
+        <p th:text="${board.nickname}" class="nickname"></p>
+    </div>
+    <div class="board-box-info">
+        <div class="board-box-main">
+            <p th:text="${board.content}"></p>
+        </div>
+        <div class="board-box-image" th:if="${imgList != null}">
+            <div th:each="imge : ${imgList}">
+                <img th:if="${imge != null && imge.boardId == board.id}" th:src="@{'/files/' + ${imge.savedNm}}" alt="첨부 이미지">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="like-box">
+    <div class="like-box-tool">
+        <b><p th:text="${like}"></p></b>
+        <form action="/like" method="post">
+            <input type="hidden" th:value="${board.id}" name="id">
+            <button type="submit">추천</button>
+        </form>
+    </div>
+</div>
+<div class="board-comment">
+    <div th:each="comments: ${comments}">
+        <div th:class="${comments.boardId == board.id} ? 'board-comments' : ''">
+            <p th:if="${comments.boardId == board.id}" th:text="${comments.nickname}"></p>
+            <p th:if="${comments.boardId == board.id}" th:text="${comments.comment}"></p>
+            <form action="/del-comment" method="post"
+                  th:if="${user.getUsername() == comments.getUsername() && comments.boardId == board.id}">
+                <input type="hidden" th:value="${comments.getId()}" name="id">
+                <input type="hidden" th:value="${comments.getBoardId()}" name="boardId">
+                <button type="submit">X</button>
+            </form>
+            <p th:if="${user.getUsername() != comments.getUsername()}"></p>
+        </div>
+    </div>
+    <form action="/comment" method="post" class="board-comment-form">
+        <input type="hidden" th:value="${board.id}" name="boardId">
+        <textarea placeholder="댓글을 작성하여 주세요" name="comment"></textarea>
+        <button type="submit">입력</button>
+    </form>
+</div>
+
+<div class="back">
+    <a href="/">돌아가기</a>
+    <form action="/modify" method="post">
+        <input type="hidden" th:value="${board.id}" name="id">
+        <button type="submit" th:if="${user.getNickname() == board.getNickname()}" class="submit">글 수정</button>
+    </form>
+    <form action="/del" method="post">
+        <input type="hidden" th:value="${board.id}" name="id">
+        <button type="submit" th:if="${user.getNickname() == board.getNickname() || user.getRole() == 'ROLE_ADMIN'}" class="submit">글 삭제</button>
+    </form>
+</div>
+</body>
+</html>

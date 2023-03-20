@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .login-form {
+        width: 450px;
+        height: 350px;
+        margin: auto;
+        background-color: #eeeeee;
+        color: #fff;
+        margin-top: 50px;
+        padding:10px 20px;
+        border-radius: 5px;
+    }
+
+    .login-form-entity {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .idPw {
+        width: 400px;
+        height: 45px;
+        border: none;
+        border-radius: 5px;
+        padding-left: 10px;
+    }
+
+    .login-form-box {
+        width: 410px;
+        height: 45px;
+        border: none;
+        text-align: center;
+        background-color: #00B140;
+        color: #fff;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+
+    .regi {
+        text-align: center;
+        text-decoration: none;
+        color: gray;
+    }
+</style>
+<body>
+<div class="login-form">
+    <form method="post" action="/login">
+        <div class="login-form-entity">
+            <input class="idPw" type="text" name="username" placeholder="아이디">
+        </div>
+        <div class="login-form-entity">
+            <input class="idPw" type="text" name="nickname" placeholder="닉네임">
+        </div>
+        <div class="login-form-entity">
+            <input class="idPw" type="password" name="password" placeholder="비밀번호">
+        </div>
+        <div class="login-form-entity">
+            <input class="login-form-box" type="submit" value="로그인">
+        </div>
+    </form>
+    <div class="login-form-entity">
+        <a class="regi" href="/login">돌아가기</a>
+    </div>
+</div>
+</body>
+</html>

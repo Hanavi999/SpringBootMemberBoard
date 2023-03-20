@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+    .input-form {
+        width: 700px;
+        margin: auto;
+        margin-top: 30px;
+    }
+
+    .write-top {
+        width: 700px;
+        height: 45px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #000000;
+        padding-bottom: 5px;
+    }
+
+    .write-top input {
+        color: white;
+        background-color: #00B140;
+        padding: 10px 30px;
+        border: none;
+    }
+
+
+    .title {
+        margin-top: 10px;
+        width: 692px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .content {
+        resize: none;
+        width: 692px;
+        height: 400px;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+</style>
+<body>
+<form method="post" action="/inputOk" enctype="multipart/form-data" class="input-form">
+    <div class="write-top">
+        <h1>글쓰기</h1>
+        <input type="submit" value="입력">
+    </div>
+    <input type="text" name="title" placeholder="제목" class="title">
+    <br/>
+    <textarea type="text" name="content" placeholder="내용" class="content"></textarea>
+    <input type="file" multiple="multiple" name="files">
+    <br/>
+</form>
+</body>
+</html>

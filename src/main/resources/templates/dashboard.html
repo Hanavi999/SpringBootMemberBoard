@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .dashboard {
+        width: 1100px;
+        height: 100%;
+        margin: auto;
+        padding: 40px 30px;
+        background-color: white;
+    }
+
+    .dashboard-top {
+        width: 1080px;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 10px;
+        background-color: #00B140;
+        color: #fff;
+    }
+
+    .title {
+        width: 900px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .del {
+        width: 100px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .title a {
+        text-decoration: none;
+    }
+
+    .name {
+        width: 200px;
+        text-align: center;
+        padding: 10px 0px;
+        border-top: 1px solid #000;
+    }
+
+    .dashboard-write {
+        height: 500px;
+        overflow-y: hidden;
+    }
+
+    .dashboard-write-top {
+        width: 1100px;
+        margin-top: 20px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
+    .board-comment {
+        width: 1100px;
+        height: 300px;
+        margin: auto;
+        padding-top: 10px;
+        overflow-y: scroll;
+    }
+
+    body {
+        background-color: #f1f1f1;
+        padding: 0;
+        margin: 0;
+    }
+
+    .board-comments {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 10px;
+        background-color: #fafafa;
+        border: 1px solid #ebebeb;
+        margin-bottom: 10px;
+    }
+
+    .board-bottom {
+        width: 1100px;
+        margin: auto;
+        margin-top: 30px;
+    }
+
+    .board-bottom a {
+        text-decoration: none;
+        color: white;
+        background-color: #00B140;
+        padding: 10px 20px;
+    }
+
+</style>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-top">
+            <h2 th:text="${user.getNickname() + '님의 대시보드 (' + user.getUsername() + ')'}"></h2>
+        </div>
+        <div class="dashboard-write">
+            <div class="dashboard-write-top">
+                <h2>글목록</h2>
+                <p></p>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th class="title">제목</th>
+                    <th class="name">글쓴이</th>
+                    <th class="del">삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board: ${write}">
+                    <td class="title"><a th:text="${board.title}" th:href="@{/view(id=${board.id})}"></a></td>
+                    <td th:text="${board.nickname}" class="name"></td>
+                    <td class="del">
+                        <form action="/del" method="post">
+                            <input type="hidden" th:value="${board.id}" name="id">
+                            <button type="submit" class="submit">X</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dashboard-write-top">
+            <h2>댓글목록</h2>
+            <p></p>
+        </div>
+        <div class="board-comment">
+            <div th:each="comments : ${comments}">
+                <div class="board-comments">
+                    <p th:text="${comments.nickname}"></p>
+                    <p th:text="${comments.comment}"></p>
+                    <form action="/del-comment" method="post">
+                        <input type="hidden" th:value="${comments.getId()}" name="id">
+                        <input type="hidden" th:value="${comments.getBoardId()}" name="boardId">
+                        <button type="submit">X</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="board-bottom">
+            <a href="/">돌아가기</a>
+            <a th:if="${user.role == 'ROLE_ADMIN'}" href="/adminPage">관리자 페이지</a>
+            <a href="/logout">로그아웃</a>
+        </div>
+    </div>
+</body>
+</html>
